@@ -38,5 +38,10 @@ export default defineVitestConfig({
       ],
     },
     globals: true,
+    reporters: ['verbose', 'json', 'vitest-sonar-reporter'],
+    outputFile: {
+      'json': 'coverage/test-report.json',
+      'vitest-sonar-reporter': 'coverage/test-report.xml',
+    },
   },
 })
