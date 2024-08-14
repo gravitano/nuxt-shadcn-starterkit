@@ -40,7 +40,7 @@ const onSubmit = handleSubmit((values) => {
   }
   const token = Math.random().toString(36).substring(2)
   auth.login(user, token)
-  layout.hideSidebar()
+  layout.closeSidebar()
   navigateTo('/')
 })
 </script>
