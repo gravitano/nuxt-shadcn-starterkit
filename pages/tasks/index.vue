@@ -123,28 +123,18 @@ const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        <div class="flex items-center">
-          <Button variant="ghost" class="px-2" asChild>
-            <NuxtLink to={`/tasks/edit/${row.original.id}`}>
-              <Icon name="lucide:edit" size="20" class="text-icon" />
-            </NuxtLink>
-          </Button>
-
-          <Button
-            variant="ghost"
-            class="px-2"
-            onClick={() => {
-              selectedItem.value = row.original
-              isDeleteModalOpen.value = true
-            }}
-          >
-            <Icon name="lucide:trash-2" size="20" class="text-icon" />
-          </Button>
-        </div>
+        <TableAction
+          row={row}
+          onDelete={() => {
+            selectedItem.value = row.original
+            isDeleteModalOpen.value = true
+          }}
+        />
       )
     },
   }),
 ]
+
 
 const table = useVueTable({
   get data() {
