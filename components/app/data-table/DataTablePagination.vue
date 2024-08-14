@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="T">
 import type { PaginationState, Table } from '@tanstack/vue-table'
-import Pagino from 'pagino'
 import { cn } from '~/lib/utils'
 import { ChevronRight } from 'lucide-vue-next'
 
