@@ -1,0 +1,49 @@
+<script setup lang="ts">
+import { useCycleList } from '@vueuse/core'
+
+const layout = useLayoutStore()
+const colorMode = useColorMode()
+const { state, next } = useCycleList(['system', 'light', 'dark'])
+
+function toggleColorMode() {
+  next()
+  colorMode.preference = state.value
+}
+
+const colorIcon: Record<string, string> = {
+  system: 'ph:laptop',
+  light: 'ph:sun',
+  dark: 'ph:moon-stars',
+}
+</script>
+
+<template>
+  <header
+    class="bg-background border-b h-16 px-4 lg:px-8 flex items-center gap-4 justify-between sticky top-0 z-10"
+  >
+    <div class="flex items-center gap-4">
+      <Button
+        aria-label="Menu"
+        class="w-10 h-10 p-0 lg:hidden"
+        variant="ghost"
+        @click="layout.toggleSidebar()"
+      >
+        <Icon name="mdi:menu" size="24" />
+      </Button>
+      <!-- <div class="font-semibold text-lg hidden lg:block">Admin</div> -->
+    </div>
+    <nav class="space-x-2">
+      <Button variant="ghost" class="size-8 p-0" aria-label="Notification">
+        <Icon size="20" name="lucide:bell" />
+      </Button>
+      <Button
+        class="size-8 p-0"
+        aria-label="Dark Mode"
+        variant="ghost"
+        @click="toggleColorMode"
+      >
+        <Icon size="20" :name="colorIcon[colorMode.preference]" />
+      </Button>
+    </nav>
+  </header>
+</template>
