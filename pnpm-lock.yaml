@@ -50,9 +50,6 @@ importers:
       nuxt:
         specifier: ^3.12.4
         version: 3.12.4(@parcel/watcher@2.4.1)(@types/node@22.2.0)(ioredis@5.4.1)(magicast@0.3.4)(rollup@4.20.0)(terser@5.31.6)(typescript@5.5.4)(vite@5.4.0(@types/node@22.2.0)(terser@5.31.6))
-      pagino:
-        specifier: ^1.4.2
-        version: 1.4.2
       pinia:
         specifier: ^2.2.1
         version: 2.2.1(typescript@5.5.4)(vue@3.4.37(typescript@5.5.4))
@@ -2856,9 +2853,6 @@ packages:
 
   package-json-from-dist@1.0.0:
     resolution: {integrity: sha512-dATvCeZN/8wQsGywez1mzHtTlP22H8OEfPrVMLNr4/eGa+ijtLn/6M5f0dY8UKNrC2O9UCU6SSoG3qRKnt7STw==}
-
-  pagino@1.4.2:
-    resolution: {integrity: sha512-rlN3ad3J5rPnvM2eg441S+gC+ZQw4QFkL144Ud0v05vWnOikpNAegSgcwRzMgUQOu/moW/aOC/67KjVgzAbjig==}
 
   parse-git-config@3.0.0:
     resolution: {integrity: sha512-wXoQGL1D+2COYWCD35/xbiKma1Z15xvZL8cI25wvxzled58V51SJM04Urt/uznS900iQor7QO04SgdfT/XlbuA==}
@@ -7188,8 +7182,6 @@ snapshots:
       p-limit: 3.1.0
 
   package-json-from-dist@1.0.0: {}
-
-  pagino@1.4.2: {}
 
   parse-git-config@3.0.0:
     dependencies:

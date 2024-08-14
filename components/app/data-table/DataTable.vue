@@ -100,6 +100,6 @@ const { pagination, totalItems } = defineProps<{
       </Table>
     </div>
 
-    <DataTablePagination :table :pagination :is-loading :total-items />
+    <DataTablePagination class="mt-6" :table :pagination :is-loading :total-items />
   </div>
 </template>

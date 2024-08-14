@@ -2,87 +2,72 @@
 import type { PaginationState, Table } from '@tanstack/vue-table'
 import Pagino from 'pagino'
 import { cn } from '~/lib/utils'
+import { ChevronRight } from 'lucide-vue-next'
 
-const { pagination, totalItems } = defineProps<{
+import {
+  Pagination,
+  PaginationEllipsis,
+  PaginationFirst,
+  PaginationLast,
+  PaginationList,
+  PaginationListItem,
+  PaginationNext,
+  PaginationPrev,
+} from '@/components/ui/pagination'
+
+import {
+  Button,
+} from '@/components/ui/button'
+
+const {
+  pagination,
+  totalItems = 0,
+  siblingCount = 1,
+  showEdges = true, defaultPage = 1
+ } = defineProps<{
   table: Table<T>
   isLoading?: boolean
   pagination: PaginationState
   totalItems: number
+  siblingCount?: number
+  showEdges?: boolean
+  defaultPage?: number
 }>()
-
-const pages = computed(() => {
-  const pagino = new Pagino({
-    showPrevious: false,
-    showNext: false,
-    showFirst: false,
-    showLast: false,
-    page: pagination.pageIndex + 1,
-  })
-  pagino.setCount(totalItems)
-  pagino.setPage(pagination.pageIndex + 1)
-  return pagino.getPages()
-})
 </script>
 
 <template>
-  <div class="flex flex-row gap-2 items-center justify-between space-x-2 pt-4">
-    <!-- <div class="flex-1 text-sm text-muted-foreground">
-            {{ table.getFilteredSelectedRowModel().rows.length }} of
-            {{ table.getFilteredRowModel().rows.length }} row(s) selected.
-          </div> -->
+   <Pagination v-slot="{ page }" :total="totalItems" :sibling-count="siblingCount" :show-edges="showEdges" :default-page="defaultPage">
+    <PaginationList v-slot="{ items }" class="flex items-center gap-2 justify-between w-full">
+      <div class="flex gap-3 items-center">
+        <PaginationFirst 
+          @click="table.firstPage()"
+        />
+        <PaginationPrev
+          @click="table.previousPage()"
+        />
+      </div>
 
-    <Button
-      variant="outline"
-      size="sm"
-      :disabled="!table.getCanPreviousPage()"
-      class="gap-2"
-      @click="table.previousPage()"
-    >
-      <Icon
-        name="ri:arrow-left-line"
-        size="20"
-        class="text-icon disabled:text-disabled"
-      />
-      <span class="hidden lg:inline">Sebelumnya</span>
-    </Button>
-
-    <div class="flex items-center gap-2 overflow-x-auto">
-      <template v-for="page in pages" :key="page">
-        <Button
-          variant="ghost"
-          :class="
-            cn({
-              'bg-gray-100 text-gray-800': pagination.pageIndex + 1 === page,
-            })
-          "
-          :disabled="
-            isLoading || ['start-ellipsis', 'end-ellipsis'].includes(page)
-          "
+      <div class="flex gap-3 items-center">
+      <template v-for="(item, index) in items">
+        <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+          <Button class="w-10 h-10 p-0" :variant="item.value === page ? 'default' : 'outline'"
           @click="table.setPageIndex(page - 1)"
-        >
-          <span v-if="['start-ellipsis', 'end-ellipsis'].includes(page)">
-            ...
-          </span>
-          <span v-else>
-            {{ page }}
-          </span>
-        </Button>
+          >
+            {{ item.value }}
+          </Button>
+        </PaginationListItem>
+        <PaginationEllipsis v-else :key="item.type" :index="index" class="text-gray-500" />
       </template>
     </div>
 
-    <Button
-      variant="outline"
-      size="sm"
-      :disabled="isLoading || !table.getCanNextPage()"
-      class="gap-2"
-      @click="table.nextPage()"
-    >
-      <span class="hidden lg:inline">Selanjutnya</span>
-      <Icon
-        name="ri:arrow-right-line"
-        size="20"
-        class="text-icon disabled:text-disabled"
+    <div class="flex gap-3 items-center">
+      <PaginationNext
+        @click="table.nextPage()"
       />
-    </Button>
-  </div>
+      <PaginationLast
+        @click="table.lastPage()"
+      />
+    </div>
+    </PaginationList>
+  </Pagination>
 </template>
