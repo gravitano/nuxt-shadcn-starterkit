@@ -5,6 +5,17 @@ function logout() {
   auth.logout()
   navigateTo('/auth/login')
 }
+
+const userInitial = computed(() => {
+  if (!auth.user)
+    return ''
+
+  return auth.user.name
+    .split(' ')
+    .slice(0, 2)
+    .map(name => name[0])
+    .join('')
+})
 </script>
 
 <template>
@@ -13,7 +24,7 @@ function logout() {
     class="flex items-center gap-4"
   >
     <Avatar>
-      <AvatarFallback>{{ auth.user.name }}</AvatarFallback>
+      <AvatarFallback>{{ userInitial }}</AvatarFallback>
     </Avatar>
     <div class="flex-grow">
       <h3 class="text-sm font-semibold">
