@@ -31,7 +31,7 @@ analyze_coverage:
       - $CI_PROJECT_DIR/coverage/
     expire_in: 1 hour
   only:
-    - develop
+    - main
   tags:
     - gits-docker
 
@@ -56,7 +56,7 @@ analyze_sonar:
   allow_failure: true
   interruptible: true
   only:
-    - develop
+    - main
   tags:
     - gits-docker
 
