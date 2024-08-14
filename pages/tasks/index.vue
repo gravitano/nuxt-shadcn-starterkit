@@ -135,7 +135,6 @@ const columns = [
   }),
 ]
 
-
 const table = useVueTable({
   get data() {
     return data.value

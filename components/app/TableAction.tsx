@@ -1,6 +1,6 @@
-import { getCoreRowModel } from "@tanstack/vue-table"
-import { Button } from "../ui/button"
-import { NuxtLink, Icon } from "#components"
+import type { getCoreRowModel } from '@tanstack/vue-table'
+import { Button } from '../ui/button'
+import { Icon, NuxtLink } from '#components'
 
 // functional component
 export default function TableAction({
