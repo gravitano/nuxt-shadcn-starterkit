@@ -1,0 +1,142 @@
+variables:
+  # cloud run variable
+  GCLOUD_PROJECT: nuxt-shadcn-starter
+  SERVICE_NAME: nuxt-shadcn-starter
+  REGISTRY_DEV: asia.gcr.io/$GCLOUD_PROJECT/$SERVICE_NAME:$CI_PIPELINE_ID
+  PORT: 3000
+  SONAR_PROJECT_KEY: Nuxt-Shadcn-Starter
+
+stages:
+  - analyze
+  # - build
+  # - deploy_dev
+  # - deploy_prod
+#  - scan_image
+
+analyze_coverage:
+  stage: analyze
+  image: node:18-alpine
+  before_script:
+    # install pnpm
+    - npm i -g pnpm
+    # set pnpm store dir
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - pnpm install
+    - pnpm coverage
+  allow_failure: true
+  # interruptible: true
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/coverage/
+    expire_in: 1 hour
+  only:
+    - develop
+  tags:
+    - gits-docker
+
+analyze_sonar:
+  stage: analyze
+  needs:
+    - analyze_coverage
+  image:
+    name: sonarsource/sonar-scanner-cli:5.0
+    entrypoint: ['']
+  variables:
+    # sonar variable
+    SONAR_USER_HOME: '${CI_PROJECT_DIR}/.sonar'
+    GIT_DEPTH: '0'
+  cache:
+    key: '${CI_JOB_NAME}'
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=. -Dsonar.host.url=https://sonar.gits.id -Dsonar.login=$SONAR_USER -Dsonar.password=$SONAR_PASSWORD
+
+  allow_failure: true
+  interruptible: true
+  only:
+    - develop
+  tags:
+    - gits-docker
+
+# build_dev:
+#   stage: build
+#   before_script:
+#     - cp $ENV_DEV .env
+#     - 'sed -i ''s/: /=/g'' .env'
+#     # - cp $ASSET_LINKS_STAG static/.well-known/assetlinks.json
+#     - cp $GCP_DEV_SERVICE_ACCOUNT gcloud-credentials.json
+#     - gcloud auth activate-service-account --key-file gcloud-credentials.json
+#     - gcloud config set project $GCLOUD_PROJECT
+#     - gcloud auth configure-docker
+#   script:
+#     - DOCKER_BUILDKIT=1 docker build -t $REGISTRY_DEV --build-arg BUILDKIT_INLINE_CACHE=1 .
+#     - docker push $REGISTRY_DEV
+#   only:
+#     - develop
+#   tags:
+#     - gits-shell
+
+# build_production:
+#   stage: build
+#   script:
+#     - cp $ENV_PROD .env
+#     - 'sed -i ''s/: /=/g'' .env'
+#     - cp $ASSET_LINKS_PROD static/.well-known/assetlinks.json
+#     - cp $PRODUCTION_CREDENTIAL gcloud-credentials.json
+#     - gcloud auth activate-service-account --key-file gcloud-credentials.json
+#     - gcloud config set project $GCLOUD_PROJECT_PRODUCTION
+#     - gcloud auth configure-docker
+#     - docker build -t $REGISTRY_PRODUCTION .
+#     - docker push $REGISTRY_PRODUCTION
+#   only:
+#     - /^production-.*$/
+#   tags:
+#     - gits-shell
+
+# scan_image:
+#  stage: scan_image
+#  before_script:
+#    - cp $GCP_DEV_SERVICE_ACCOUNT gcloud-credentials.json
+#    - export GOOGLE_APPLICATION_CREDENTIALS="gcloud-credentials.json"
+#  script:
+#    - trivy image -q --scanners vuln,config,secret $REGISTRY_DEV --timeout 60m
+#    #- trivy image -q --scanners vuln,config,secret --exit-code 1 --severity CRITICAL $REGISTRY --timeout 15m
+#  only:
+#    - main
+#  tags:
+#    - gits-shell
+
+# deploy_dev:
+#   stage: deploy_dev
+#   script:
+#     - cp $GCP_DEV_SERVICE_ACCOUNT gcloud-credentials.json
+#     - cp $ENV_DEV env.yaml
+#     - gcloud auth activate-service-account --key-file gcloud-credentials.json
+#     - gcloud config set project $GCLOUD_PROJECT
+#     - gcloud auth configure-docker
+#     - gcloud run deploy $SERVICE_NAME --env-vars-file env.yaml --image=$REGISTRY_DEV --platform managed --region asia-southeast2 --port $PORT --allow-unauthenticated
+#   # after_script:
+#   #  - 'curl -X POST --data-urlencode "payload={\"channel\":\"$SLACK_CHANNEL\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"MyPertamina - WEB\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Deployment*\n$CI_JOB_STATUS\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Environment*\nStaging\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Mention*\n<@U031EKFNUM9> <@U035Y5HDVAL>\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*URL*\nhttps://web.mypertamina.gits.app/\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Release Notes*\n$CI_RELEASE_DESCRIPTION\"}}]}" $SLACK_WEBHOOK_URL'
+#   only:
+#     - develop
+#   tags:
+#     - gits-shell
+
+# deploy_production:
+#   stage: deploy_prod
+#   when: manual
+#   script:
+#     - cp $PRODUCTION_CREDENTIAL gcloud-credentials.json
+#     - cp $ENV_PROD env.yaml
+#     - gcloud auth activate-service-account --key-file gcloud-credentials.json
+#     - gcloud config set project $GCLOUD_PROJECT_PRODUCTION
+#     - gcloud auth configure-docker
+#     - gcloud run deploy $SERVICE_NAME_PRODUCTION --env-vars-file env.yaml --image=$REGISTRY_PRODUCTION --platform managed --region asia-southeast2 --port $PORT --allow-unauthenticated
+#   # after_script:
+#   # - 'curl -X POST --data-urlencode "payload={\"channel\":\"$SLACK_CHANNEL\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"MyPertamina - WEB\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Deployment*\n$CI_JOB_STATUS\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Environment*\nProduction\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Mention*\n<@U031EKFNUM9> <@U035Y5HDVAL>\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*URL*\nhttps://web.mypertamina.gits.app/\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Release Notes*\n$CI_RELEASE_DESCRIPTION\"}}]}" $SLACK_WEBHOOK_URL'
+#   only:
+#     - /^production-.*$/
+#   tags:
+#     - gits-shell
