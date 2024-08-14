@@ -105,7 +105,7 @@ const isCollapsed = ref(false)
       <div class="px-5">
         <Nav :is-collapsed="isCollapsed" :links="secondaryMenus" />
 
-        <UsedSpace />
+        <UsedSpace :progress="75" />
       </div>
 
       <Separator class="mt-5" />
