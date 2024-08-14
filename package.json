@@ -10,7 +10,12 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test:unit": "vitest",
+    "test:dev": "NUXT_VITEST_DEV_TEST=true nuxt dev",
+    "test": "pnpm test:unit --run && pnpm test:dev",
+    "coverage": "vitest run --coverage",
+    "coverage:serve": "npx http-server coverage"
   },
   "dependencies": {
     "@morpheme/tailwind-config": "1.0.0-rc.4",
@@ -39,11 +44,19 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.25.1",
+    "@nuxt/test-utils": "^3.14.1",
     "@nuxtjs/color-mode": "^3.4.2",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
+    "@pinia/testing": "^0.1.5",
+    "@vitest/coverage-v8": "^2.0.5",
+    "@vue/test-utils": "^2.4.6",
     "eslint": "9.5.0",
     "eslint-plugin-format": "^0.1.2",
-    "typescript": "^5.5.4"
+    "happy-dom": "^14.12.3",
+    "playwright-core": "^1.46.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5",
+    "vitest-sonar-reporter": "^2.0.0"
   }
 }

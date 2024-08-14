@@ -11,6 +11,8 @@ export interface SidebarMenu {
   to?: string
   children?: SidebarMenu[]
 }
+
+const route = useRoute()
 </script>
 
 <template>
@@ -21,7 +23,7 @@ export interface SidebarMenu {
           <HorizontalMenu
             :label="menu.label"
             :icon="menu.icon"
-            :is-active="menu.to === $route.path"
+            :is-active="menu.to === route.path"
             @click="layout.toggleSidebar()"
           />
         </AccordionTrigger>
@@ -31,7 +33,7 @@ export interface SidebarMenu {
             :key="child.label"
             :to="child.to"
             :label="child.label"
-            :is-active="menu.to === $route.path"
+            :is-active="menu.to === route.path"
             @click="layout.toggleSidebar()"
           />
         </AccordionContent>
@@ -42,7 +44,7 @@ export interface SidebarMenu {
       :label="menu.label"
       :icon="menu.icon"
       :to="menu.to"
-      :is-active="menu.to === $route.path"
+      :is-active="menu.to === route.path"
       @click="layout.toggleSidebar()"
     />
   </template>

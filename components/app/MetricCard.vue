@@ -1,11 +1,13 @@
 <script setup lang="ts">
+export interface Metric {
+  title: string
+  value: string
+  percentage: string
+  icon: string
+}
+
 defineProps<{
-  metric: {
-    title: string
-    value: string
-    percentage: string
-    icon: string
-  }
+  metric: Metric
 }>()
 </script>
 

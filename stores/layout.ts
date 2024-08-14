@@ -1,10 +1,15 @@
 export const useLayoutStore = defineStore('layout', () => {
   const isSidebarOpen = ref(false)
+
   const toggleSidebar = () => {
     isSidebarOpen.value = !isSidebarOpen.value
   }
 
-  const hideSidebar = () => {
+  const openSidebar = () => {
+    isSidebarOpen.value = true
+  }
+
+  const closeSidebar = () => {
     isSidebarOpen.value = false
   }
 
@@ -28,8 +33,9 @@ export const useLayoutStore = defineStore('layout', () => {
 
   return {
     isSidebarOpen,
+    openSidebar,
     toggleSidebar,
-    hideSidebar,
+    closeSidebar,
   }
 }, {
   persist: true,

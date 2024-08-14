@@ -15,6 +15,8 @@ const colorIcon: Record<string, string> = {
   light: 'ph:sun',
   dark: 'ph:moon-stars',
 }
+
+const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const colorIcon: Record<string, string> = {
         variant="ghost"
         @click="toggleColorMode"
       >
-        <Icon size="20" :name="colorIcon[colorMode.preference]" />
+        <Icon size="20" :name="currentIcon" />
       </Button>
     </nav>
   </header>

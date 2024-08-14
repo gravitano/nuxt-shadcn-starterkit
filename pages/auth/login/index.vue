@@ -33,7 +33,7 @@ const auth = useAuthStore()
 const onSubmit = handleSubmit((values) => {
   // console.log('Form submitted!', values);
   const user: AuthUser = {
-    id: '1',
+    id: 1,
     name: 'John Doe',
     email: values.email,
     role: 'user',

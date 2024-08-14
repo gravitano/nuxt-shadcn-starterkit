@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const { progress = 0 } = defineProps<{
+  progress: number
+}>()
+
 const isCollapsed = ref(false)
 </script>
 
@@ -19,8 +23,8 @@ const isCollapsed = ref(false)
       </Button>
     </div>
     <CardContent class="text-sm">
-      Your team has used 80% of your available space. Need more?
-      <Progress :model-value="80" class="mt-4 h-2 bg-gray-200" />
+      Your team has used {{ progress }}% of your available space. Need more?
+      <Progress :model-value="progress" class="mt-4 h-2 bg-gray-200" />
     </CardContent>
     <CardFooter class="px-2">
       <Button variant="ghost" @click="isCollapsed = !isCollapsed">

@@ -26,6 +26,7 @@ import { Icon, NuxtLink } from '#components'
 import { Badge } from '~/components/ui/badge'
 import DeleteModal from '~/components/app/delete-modal/DeleteModal.vue'
 import { deleteTodo, getTodoList } from '~/api/tasks'
+import TableAction from '~/components/app/TableAction'
 
 const columnHelper = createColumnHelper<Task>()
 const sorting = ref<SortingState>([])

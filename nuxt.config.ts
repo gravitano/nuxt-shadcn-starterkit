@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@vee-validate/nuxt',
     '@nuxtjs/color-mode',
+    '@nuxt/test-utils/module',
   ],
 
   shadcn: {
