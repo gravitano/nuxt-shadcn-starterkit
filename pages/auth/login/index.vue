@@ -27,7 +27,6 @@ const { handleSubmit, meta } = useForm({
   validationSchema: formSchema,
 })
 
-const layout = useLayoutStore()
 const auth = useAuthStore()
 
 const onSubmit = handleSubmit((values) => {
@@ -40,7 +39,6 @@ const onSubmit = handleSubmit((values) => {
   }
   const token = Math.random().toString(36).substring(2)
   auth.login(user, token)
-  layout.closeSidebar()
   navigateTo('/')
 })
 </script>
