@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
+  shadow?: ButtonVariants['shadow']
   class?: HTMLAttributes['class']
   loading?: boolean
 }
@@ -20,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   <Primitive
     :as="as"
     :as-child="asChild"
-    :class="cn(buttonVariants({ variant, size }), props.class)"
+    :class="cn(buttonVariants({ variant, size, shadow }), props.class)"
   >
     <Spinner v-if="loading" class="mr-3" />
     <slot />
