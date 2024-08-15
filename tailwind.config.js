@@ -80,6 +80,9 @@ module.exports = {
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
         'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
+      boxShadow: {
+        default: '0px 1px 2px 0px hsla(220, 43%, 11%, 0.05)',
+      },
     },
   },
   plugins: [animate],
