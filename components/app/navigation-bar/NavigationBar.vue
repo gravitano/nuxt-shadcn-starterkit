@@ -26,11 +26,11 @@ const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
     <div class="flex items-center gap-4">
       <Button
         aria-label="Menu"
-        class="w-10 h-10 p-0 lg:hidden"
+        class="w-10 h-10 p-0"
         variant="ghost"
         @click="layout.toggleSidebar()"
       >
-        <Icon name="mdi:menu" size="24" />
+        <Icon name="mdi:menu" size="24" class="bg-[#667085]" />
       </Button>
       <!-- <div class="font-semibold text-lg hidden lg:block">Admin</div> -->
     </div>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { mainMenus, secondaryMenus } from '~/constants/menus'
 
+const layout = useLayoutStore()
+
 const isCollapsed = ref(false)
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row w-full max-w-full bg-gray-100">
+  <div class="flex flex-col lg:flex-row w-full max-w-full bg-gray-100 dark:bg-transparent">
     <Sidebar>
       <NuxtLink to="/" class="block px-5 mt-5">
         <NuxtImg
@@ -41,7 +43,13 @@ const isCollapsed = ref(false)
       <UserProfileCard class="p-4" />
     </Sidebar>
 
-    <div class="w-full lg:w-auto flex-grow lg:max-w-[calc(100%-280px)]">
+    <div
+      class="flex-grow transition-all duration-300" :class="[
+        {
+          'lg:ml-[320px]': layout.isSidebarOpen,
+        },
+      ]"
+    >
       <NavigationBar />
       <div class="p-4 lg:px-8 lg:py-6">
         <slot />
