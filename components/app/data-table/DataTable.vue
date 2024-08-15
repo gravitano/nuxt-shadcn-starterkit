@@ -6,13 +6,21 @@ import {
 } from '@tanstack/vue-table'
 import { cn } from '~/lib/utils'
 
-const { pagination, totalItems } = defineProps<{
+const { pagination, totalItems, table } = defineProps<{
   table: Table<T>
   isLoading?: boolean
   pagination: PaginationState
   totalItems: number
   columns: any[]
 }>()
+
+const currentPage = defineModel<number>('page', {
+  default: 1,
+})
+
+watch(currentPage, () => {
+  table.setPageIndex(currentPage.value - 1)
+})
 </script>
 
 <template>
@@ -100,6 +108,13 @@ const { pagination, totalItems } = defineProps<{
       </Table>
     </div>
 
-    <DataTablePagination class="mt-6" :table :pagination :is-loading :total-items />
+    <DataTablePagination
+      v-model:page="currentPage"
+      class="mt-6"
+      :table
+      :is-loading
+      :total-items
+      :items-per-page="pagination.pageSize"
+    />
   </div>
 </template>

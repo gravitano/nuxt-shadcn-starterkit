@@ -1,4 +1,4 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts">
 import type { PaginationState, Table } from '@tanstack/vue-table'
 
 import {
@@ -17,39 +17,39 @@ import {
 } from '@/components/ui/button'
 
 const {
-  pagination,
+  itemsPerPage = 10,
   totalItems = 0,
   siblingCount = 1,
   showEdges = true,
   defaultPage = 1,
 } = defineProps<{
-  table: Table<T>
   isLoading?: boolean
-  pagination: PaginationState
+  itemsPerPage: number
   totalItems: number
   siblingCount?: number
   showEdges?: boolean
   defaultPage?: number
 }>()
+
+const currentPage = defineModel<number>('page', {
+  default: 0,
+})
 </script>
 
 <template>
   <Pagination
     v-slot="{ page }"
+    v-model:page="currentPage"
     :total="totalItems"
     :sibling-count="siblingCount"
     :show-edges="showEdges"
     :default-page="defaultPage"
-    :items-per-page="pagination.pageSize"
+    :items-per-page="itemsPerPage"
   >
     <PaginationList v-slot="{ items }" class="flex items-center gap-2 justify-between w-full">
       <div class="flex gap-3 items-center">
-        <PaginationFirst
-          @click="table.firstPage()"
-        />
-        <PaginationPrev
-          @click="table.previousPage()"
-        />
+        <PaginationFirst />
+        <PaginationPrev />
       </div>
 
       <div class="flex gap-3 items-center">
@@ -57,7 +57,6 @@ const {
           <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
             <Button
               class="w-10 h-10 p-0" :variant="item.value === page ? 'default' : 'outline'"
-              @click="table.setPageIndex(page - 1)"
             >
               {{ item.value }}
             </Button>
@@ -67,12 +66,8 @@ const {
       </div>
 
       <div class="flex gap-3 items-center">
-        <PaginationNext
-          @click="table.nextPage()"
-        />
-        <PaginationLast
-          @click="table.lastPage()"
-        />
+        <PaginationNext />
+        <PaginationLast />
       </div>
     </PaginationList>
   </Pagination>
