@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/test-utils/module',
+    "@nuxt/fonts"
   ],
 
   shadcn: {
