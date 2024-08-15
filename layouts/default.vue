@@ -7,7 +7,7 @@ const isCollapsed = ref(false)
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row w-full max-w-full bg-gray-100 dark:bg-transparent">
+  <div class="flex flex-col lg:flex-row w-full max-w-full min-h-svh bg-gray-100 dark:bg-transparent">
     <Sidebar>
       <NuxtLink to="/" class="block px-5 mt-5">
         <NuxtImg
