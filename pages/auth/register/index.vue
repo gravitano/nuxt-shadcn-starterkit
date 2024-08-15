@@ -38,7 +38,7 @@ const onSubmit = handleSubmit((_values) => {
 </script>
 
 <template>
-  <div class="w-[360px]">
+  <div class="w-[500px]">
     <NuxtImg src="/logo.png" alt="Logo" class="mb-6 w-[150px]" fit="center" />
 
     <div class="space-y-2 mb-6">
