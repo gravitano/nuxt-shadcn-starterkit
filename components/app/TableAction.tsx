@@ -1,30 +1,47 @@
-import type { getCoreRowModel } from '@tanstack/vue-table'
+import { EyeIcon, Pencil02Icon, Trash01Icon } from '@morphemeicons/vue/untitled'
 import { Button } from '../ui/button'
-import { Icon, NuxtLink } from '#components'
+import { NuxtLink } from '#components'
+
+export interface TableActionProps {
+  viewLink?: string
+  editLink?: string
+  onDelete?: () => void
+}
 
 // functional component
 export default function TableAction({
-  row,
+  viewLink,
+  editLink,
   onDelete,
-}: {
-  row: ReturnType<typeof getCoreRowModel>['row']
-  onDelete: () => void
-}) {
+}: TableActionProps,
+) {
   return (
-    <div class="flex items-center">
-      <Button variant="ghost" class="px-2" asChild>
-        <NuxtLink to={`/tasks/edit/${row.original.id}`}>
-          <Icon name="lucide:edit" size="20" class="text-icon" />
-        </NuxtLink>
-      </Button>
+    <div class="flex items-center gap-1">
+      {viewLink && (
+        <Button variant="ghost" class="px-2" asChild>
+          <NuxtLink to={viewLink}>
+            <EyeIcon class="size-5" />
+          </NuxtLink>
+        </Button>
+      )}
 
-      <Button
-        variant="ghost"
-        class="px-2"
-        onClick={onDelete}
-      >
-        <Icon name="lucide:trash-2" size="20" class="text-icon" />
-      </Button>
+      {editLink && (
+        <Button variant="ghost" class="px-2" asChild>
+          <NuxtLink to={editLink}>
+            <Pencil02Icon class="size-5" />
+          </NuxtLink>
+        </Button>
+      )}
+
+      {onDelete && (
+        <Button
+          variant="ghost"
+          class="px-2"
+          onClick={onDelete}
+        >
+          <Trash01Icon class="size-5" />
+        </Button>
+      )}
     </div>
   )
 }

@@ -10,6 +10,7 @@ interface Props extends PrimitiveProps {
   shadow?: ButtonVariants['shadow']
   class?: HTMLAttributes['class']
   loading?: boolean
+  onClick?: HTMLAttributes['onClick']
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
     :as="as"
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size, shadow }), props.class)"
+    @click="onClick"
   >
     <Spinner v-if="loading" class="mr-3" />
     <slot />
