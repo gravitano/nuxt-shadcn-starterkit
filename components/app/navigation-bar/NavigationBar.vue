@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCycleList } from '@vueuse/core'
+import { Menu01Icon } from '@morphemeicons/vue/untitled'
 
 const layout = useLayoutStore()
 const colorMode = useColorMode()
@@ -30,7 +31,7 @@ const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
         variant="ghost"
         @click="layout.toggleSidebar()"
       >
-        <Icon name="mdi:menu" size="24" class="bg-[#667085]" />
+        <Menu01Icon class="size-6 text-[hsl(221,13%,46%)]" />
       </Button>
       <!-- <div class="font-semibold text-lg hidden lg:block">Admin</div> -->
     </div>

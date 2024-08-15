@@ -11,6 +11,9 @@ importers:
       '@morpheme/tailwind-config':
         specifier: 1.0.0-rc.4
         version: 1.0.0-rc.4(typescript@5.5.4)
+      '@morphemeicons/vue':
+        specifier: ^0.2.0
+        version: 0.2.0(vue@3.4.37(typescript@5.5.4))
       '@nuxt/fonts':
         specifier: ^0.7.2
         version: 0.7.2(ioredis@5.4.1)(magicast@0.3.4)(rollup@4.20.0)(vite@5.4.0(@types/node@22.2.0)(terser@5.31.6))
@@ -948,6 +951,11 @@ packages:
 
   '@morpheme/utils@1.0.0-rc.4':
     resolution: {integrity: sha512-s0C1T7dPx5+xNn3VJBgv4QQIBT9vEvxefggEG68dswa5HK26eQa3UITqdHc/PECFhj75T9mMgpOud4mWWnC3nQ==}
+
+  '@morphemeicons/vue@0.2.0':
+    resolution: {integrity: sha512-4FBTs1nPR0Yxwfdj9M62YAAWvB10x0am1pNHp0SLxzi9XA0MsBOwQtORtqj6dPhWr9OYW0llxxyCosYuVvPh5Q==}
+    peerDependencies:
+      vue: '>= 3'
 
   '@netlify/functions@2.8.1':
     resolution: {integrity: sha512-+6wtYdoz0yE06dSa9XkP47tw5zm6g13QMeCwM3MmHx1vn8hzwFa51JtmfraprdkL7amvb7gaNM+OOhQU1h6T8A==}
@@ -5957,6 +5965,10 @@ snapshots:
       vue: 3.4.37(typescript@5.5.4)
     transitivePeerDependencies:
       - typescript
+
+  '@morphemeicons/vue@0.2.0(vue@3.4.37(typescript@5.5.4))':
+    dependencies:
+      vue: 3.4.37(typescript@5.5.4)
 
   '@netlify/functions@2.8.1':
     dependencies:
