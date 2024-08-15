@@ -124,8 +124,8 @@ const columns = [
     cell: ({ row }) => {
       return (
         <TableAction
-          viewLink={`/tasks/${row.original.id}`}
-          editLink={`/tasks/${row.original.id}/edit`}
+          viewLink={`/tasks/view/${row.original.id}`}
+          editLink={`/tasks/edit/${row.original.id}`}
           onDelete={() => {
             selectedItem.value = row.original
             isDeleteModalOpen.value = true

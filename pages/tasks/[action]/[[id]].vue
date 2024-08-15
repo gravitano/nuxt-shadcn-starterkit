@@ -15,18 +15,20 @@ import { type CreateTodoPayload, type UpdateTodoPayload, createTodo, getTodoById
 import { getErrorMessage } from '~/lib/utils'
 
 const route = useRoute()
-const action = route.params.action as 'create' | 'edit'
-
+const action = route.params.action as 'create' | 'edit' | 'view'
+const isView = action === 'view'
 const id = route.params.id as string
 
 const actionLabel = {
   create: 'Create',
   edit: 'Edit',
+  view: 'View',
 }[action]
 
 const submitLabel = {
   create: 'Tambah Task',
   edit: 'Perbarui Task',
+  view: 'Lihat Task',
 }[action]
 
 const { data, isLoading } = useQuery({
@@ -128,6 +130,7 @@ const onSubmit = handleSubmit((values) => {
                   <Input
                     placeholder="Masukan judul"
                     v-bind="componentField"
+                    :disabled="isView"
                   />
                 </FormControl>
                 <FormMessage />
@@ -145,6 +148,7 @@ const onSubmit = handleSubmit((values) => {
                 <FormControl>
                   <Checkbox
                     :checked="value"
+                    :disabled="isView"
                     @update:checked="handleChange"
                   />
                 </FormControl>
@@ -155,7 +159,10 @@ const onSubmit = handleSubmit((values) => {
         </CardContent>
       </Card>
 
-      <Card class="mt-6">
+      <Card
+        v-if="!isView"
+        class="mt-6"
+      >
         <CardFooter class="py-6 justify-end gap-4">
           <Button
             :disabled="isLoading || createMutation.isPending.value || updateMutation.isPending.value" variant="outline" @click="navigateTo('/tasks')"
