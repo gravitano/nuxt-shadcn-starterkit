@@ -7,14 +7,14 @@
     class="h-screen bg-background flex flex-col lg:flex-row gap-6 items-center"
   >
     <div
-      class="hidden w-6/12 bg-primary dark:bg-background h-full lg:flex items-center justify-center px-6 rounded-r-3xl"
+      class="hidden w-6/12 bg-primary dark:bg-background h-full lg:flex items-center justify-center px-10"
     >
       <NuxtImg
         src="/images/undraw_secure_login_pdn4.svg"
         alt="undraw_secure_login_pdn4"
         width="471.04"
         height="460.258"
-        class="shrink-0"
+        class="shrink-0 max-w-full"
       />
     </div>
     <div
