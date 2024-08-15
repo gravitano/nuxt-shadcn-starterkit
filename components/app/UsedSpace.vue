@@ -30,7 +30,7 @@ const isCollapsed = ref(false)
       <Button variant="ghost" @click="isCollapsed = !isCollapsed">
         Dismiss
       </Button>
-      <a href="#" class="text-sm text-[#0764A7] font-semibold">
+      <a href="#" class="text-sm text-primary font-semibold">
         Upgrade plan
       </a>
     </CardFooter>
