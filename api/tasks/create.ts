@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Task } from '~/pages/tasks/schema'
+import type { Task } from './types'
 
 export interface CreateTodoPayload {
   title: string

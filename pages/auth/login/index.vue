@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
 import { useForm } from 'vee-validate'
+import * as yup from 'yup'
+import { toTypedSchema } from '@vee-validate/yup'
 import {
   FormControl,
   // FormDescription,
@@ -16,10 +16,10 @@ definePageMeta({
 })
 
 const formSchema = toTypedSchema(
-  z.object({
-    email: z.string().email().min(2).max(50),
-    password: z.string(),
-    rememberMe: z.boolean().optional(),
+  yup.object({
+    email: yup.string().email().required().min(2).max(50).label('Email'),
+    password: yup.string().required().label('Password'),
+    rememberMe: yup.boolean().optional().label('Ingat saya'),
   }),
 )
 

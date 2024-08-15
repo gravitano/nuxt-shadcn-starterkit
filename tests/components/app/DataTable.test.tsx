@@ -8,7 +8,7 @@ import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
 import TableAction from '~/components/app/TableAction'
-import type { Task } from '~/pages/tasks/schema'
+import type { Task } from '~/api'
 
 mockComponent('DataTable', () => import('~/components/app/data-table/DataTable.vue'))
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
 import {
@@ -17,15 +17,13 @@ definePageMeta({
 })
 
 const formSchema = toTypedSchema(
-  z
+  yup
     .object({
-      email: z.string().email().min(2).max(50),
-      password: z.string().min(6).max(50),
-      passwordConfirmation: z.string(),
-      rememberMe: z.boolean().optional(),
-    })
-    .refine(data => data.password === data.passwordConfirmation, {
-      message: 'Password confirmation must match the password.',
+      email: yup.string().email().min(2).max(50).required().label('Email'),
+      password: yup.string().min(6).max(50).required().label('Password'),
+      passwordConfirmation: yup.string().required()
+        .oneOf([yup.ref('password')], 'Password must match')
+        .label('Password Confirmation'),
     }),
 )
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { toTypedSchema } from '@vee-validate/yup'
+import * as yup from 'yup'
 import { useForm } from 'vee-validate'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
@@ -18,10 +18,12 @@ const route = useRoute()
 const action = route.params.action as 'create' | 'edit'
 
 const id = route.params.id as string
+
 const actionLabel = {
   create: 'Create',
   edit: 'Edit',
 }[action]
+
 const submitLabel = {
   create: 'Tambah Task',
   edit: 'Perbarui Task',
@@ -35,9 +37,9 @@ const { data, isLoading } = useQuery({
 })
 
 const formSchema = toTypedSchema(
-  z.object({
-    title: z.string().nonempty('Title is required'),
-    completed: z.boolean().default(false),
+  yup.object({
+    title: yup.string().required().min(2).max(50).label('Title'),
+    completed: yup.boolean().default(false).label('Completed'),
   }),
 )
 

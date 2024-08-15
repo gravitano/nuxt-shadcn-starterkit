@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { PaginatedParams } from '../types'
-import type { Task } from '~/pages/tasks/schema'
+import type { Task } from './types'
 
 export function getTodoList(params: PaginatedParams) {
   return axios.get<Task[]>('/todos', {
