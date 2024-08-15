@@ -21,20 +21,20 @@ const userInitial = computed(() => {
 <template>
   <div
     v-if="auth.user"
-    class="flex items-center gap-4"
+    class="shrink-0 flex items-center gap-4"
   >
     <Avatar>
       <AvatarFallback>{{ userInitial }}</AvatarFallback>
     </Avatar>
-    <div class="flex-grow">
+    <div class="flex-grow w-7/12">
       <h3 class="text-sm font-semibold">
         {{ auth.user.name }}
       </h3>
-      <div class="text-sm text-gray-500 truncate">
+      <div :title="auth.user.email" class="text-sm text-gray-500 truncate">
         {{ auth.user.email }}
       </div>
     </div>
-    <div>
+    <div class="ml-auto">
       <Button variant="ghost" @click="logout">
         <Icon name="ph:sign-out" size="20" />
       </Button>
