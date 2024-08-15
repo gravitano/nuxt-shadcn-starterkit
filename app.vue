@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Toaster } from '@/components/ui/sonner'
+
 const appConfig = useAppConfig()
 
 useHead({
@@ -18,4 +20,5 @@ useHead({
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <Toaster class="pointer-events-auto" />
 </template>
