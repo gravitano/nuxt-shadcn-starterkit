@@ -1,6 +1,18 @@
-# Nuxt 3 Minimal Starter
+# Nuxt Shadcn Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A complete starter to create apps with Nuxt and Shadcn Vue.
+
+## Tech Stack
+
+- [Nuxt](https://nuxt.com/)
+- [Shadcn Vue](https://www.shadcn-vue.com/)
+- [Morpheme Icons](https://npmjs.com/package/@morphemeicons/vue) + [Presets](https://npmjs.com/package/@morpheme/tailwind-config)
+- [Pinia](https://pinia.vuejs.org/) + [pinia-plugin-persistedstate](https://prazdevs.github.io/pinia-plugin-persistedstate)
+- [vee-validate](https://vee-validate.logaretm.com/) and [yup](https://github.com/jquense/yup)
+- Nuxt Plugins:
+  - [Nuxt Fonts](https://nuxt.com/modules/fonts)
+  - [Nuxt Image](https://image.nuxt.com/)
+  - [Nuxt Icon](https://nuxt.com/modules/icon)
 
 ## Setup
 
