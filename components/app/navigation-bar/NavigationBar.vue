@@ -27,7 +27,7 @@ const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
     <div class="flex items-center gap-4">
       <Button
         aria-label="Menu"
-        class="w-10 h-10 p-0"
+        class="w-10 h-10 p-0 -ml-2"
         variant="ghost"
         @click="layout.toggleSidebar()"
       >
