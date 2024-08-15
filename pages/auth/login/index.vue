@@ -53,7 +53,7 @@ const onSubmit = handleSubmit((values) => {
       <h1 class="text-[28px]/[42px] font-semibold text-app-primary dark:text-foreground">
         Masuk
       </h1>
-      <p class="text-muted text-base/6 font-medium">
+      <p class="text-muted-foreground text-base/6 font-medium">
         Silahkan masuk, untuk mengakses semua fitur yang ada!
       </p>
     </div>
