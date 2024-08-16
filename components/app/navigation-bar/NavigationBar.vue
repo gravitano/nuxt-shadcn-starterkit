@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCycleList } from '@vueuse/core'
 import { Menu01Icon } from '@morphemeicons/vue/untitled'
+import { NotificationIcon } from '@morphemeicons/vue/iconsax/linear'
 
 const layout = useLayoutStore()
 const colorMode = useColorMode()
@@ -35,9 +36,9 @@ const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
       </Button>
       <!-- <div class="font-semibold text-lg hidden lg:block">Admin</div> -->
     </div>
-    <nav class="space-x-2">
+    <nav class="flex items-center gap-2">
       <Button variant="ghost" class="size-8 p-0" aria-label="Notification">
-        <Icon size="20" name="lucide:bell" />
+        <NotificationIcon class="size-5 text-gray-800" />
       </Button>
       <Button
         class="size-8 p-0"
