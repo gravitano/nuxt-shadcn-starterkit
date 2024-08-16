@@ -51,6 +51,7 @@ analyze_sonar:
     paths:
       - .sonar/cache
   script:
+    - pnpm install
     - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.sources=. -Dsonar.host.url=https://sonar.gits.id -Dsonar.login=$SONAR_USER -Dsonar.password=$SONAR_PASSWORD
 
   allow_failure: true
