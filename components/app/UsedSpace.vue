@@ -16,7 +16,7 @@ const isCollapsed = ref(false)
       </div>
       <Button
         variant="ghost"
-        class="rounded-full"
+        class="rounded-full size-8 p-0"
         @click="isCollapsed = !isCollapsed"
       >
         <Icon name="ph:x" />
