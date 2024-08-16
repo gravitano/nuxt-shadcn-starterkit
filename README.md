@@ -13,6 +13,7 @@ A complete starter to create apps with Nuxt and Shadcn Vue.
   - [Nuxt Fonts](https://nuxt.com/modules/fonts)
   - [Nuxt Image](https://image.nuxt.com/)
   - [Nuxt Icon](https://nuxt.com/modules/icon)
+- Testing with [@nuxt/test-utils](https://nuxt.com/docs/getting-started/testing)
 
 ## Setup
 
