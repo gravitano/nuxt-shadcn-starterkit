@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const isOpen = defineModel<boolean>('open', {
-  default: false,
+  default: true,
 })
 </script>
 
