@@ -15,7 +15,8 @@ defineProps<{
   >
     <NuxtLink :to="to" class="flex gap-3 items-center w-full">
       <Icon
-        :name="icon || ''"
+        v-if="icon"
+        :name="icon"
         size="24"
         :class="{
           'text-icon': !isActive,
