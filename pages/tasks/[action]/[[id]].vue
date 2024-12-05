@@ -2,6 +2,7 @@
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
+import { toast } from 'vue-sonner'
 import {
   FormControl,
   FormField,
@@ -38,8 +39,8 @@ watch(data, (value) => {
   if (value) {
     resetForm({
       values: {
-        title: value.data.title,
-        completed: value.data.completed,
+        title: value.title,
+        completed: value.completed,
       },
     })
   }
@@ -51,6 +52,14 @@ const onSubmit = handleSubmit((values) => {
   mutation.mutate({
     id,
     body: values,
+  }, {
+    onSuccess() {
+      toast.success(id ? 'Task berhasil diperbarui' : 'Task berhasil ditambahkan')
+      navigateTo('/tasks')
+    },
+    onError(err) {
+      toast.error(getErrorMessage(err))
+    },
   })
 })
 </script>
@@ -75,7 +84,7 @@ const onSubmit = handleSubmit((values) => {
     <form class="space-y-4 mt-4" @submit="onSubmit">
       <Card>
         <CardHeader class="flex flex-row justify-between items-center gap-4">
-          <CardTitle> {{ actionLabel }} Task </CardTitle>
+          <CardTitle> {{ actionLabel[action] }} Task </CardTitle>
         </CardHeader>
         <Separator />
         <CardContent>
@@ -136,7 +145,7 @@ const onSubmit = handleSubmit((values) => {
             :disabled="isLoading"
             :loading="mutation.isPending.value"
           >
-            {{ submitLabel }}
+            {{ submitLabel[action] }}
           </Button>
         </CardFooter>
       </Card>
