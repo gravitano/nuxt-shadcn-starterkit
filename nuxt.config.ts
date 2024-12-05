@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/test-utils/module',
-    "@nuxt/fonts"
+    '@nuxt/fonts',
   ],
 
   shadcn: {
@@ -74,4 +74,8 @@ export default defineNuxtConfig({
     // ~/components/base/Btn.vue => <BaseBtn />
     '~/components',
   ],
+
+  imports: {
+    dirs: ['./queries', './constants'],
+  },
 })

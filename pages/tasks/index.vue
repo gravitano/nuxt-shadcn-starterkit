@@ -1,65 +1,49 @@
 <script setup lang="tsx">
 import type {
-  ColumnFiltersState,
+  ColumnDef,
   PaginationState,
   SortingState,
-  VisibilityState,
 } from '@tanstack/vue-table'
-import {
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
-
-import { ArrowUpDown } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { useMutation, useQuery } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
+import { useQueryClient } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { getErrorMessage, valueUpdater } from '@/lib/utils'
 import { Icon, NuxtLink } from '#components'
 import { Badge } from '~/components/ui/badge'
 import DeleteModal from '~/components/app/delete-modal/DeleteModal.vue'
-import { type Task, deleteTodo, getTodoList } from '~/api/tasks'
 import TableAction from '~/components/app/TableAction'
+import { useTodos } from '~/queries/todos'
+import type { Todo } from '~/types/todos'
+import DataTableHeader from '~/components/app/data-table/DataTableHeader.vue'
 
-const columnHelper = createColumnHelper<Task>()
 const sorting = ref<SortingState>([])
-const columnFilters = ref<ColumnFiltersState>([])
-const columnVisibility = ref<VisibilityState>({})
-const rowSelection = ref({})
-const isDeleteModalOpen = ref(false)
-const selectedItem = ref<Task | null>(null)
+const isDialogDeleteOpen = ref(false)
+const selectedItem = ref<Todo | null>(null)
 const pagination = ref<PaginationState>({
   pageIndex: 0,
   pageSize: 10,
 })
-const totalItems = ref(1000)
+const totalItems = ref(100)
 
 const {
-  data: tasksData,
+  data,
   isLoading,
-  refetch,
-} = useQuery({
-  queryKey: ['tasks', pagination],
-  queryFn: () => {
-    return getTodoList({
+} = useTodos({
+  queryKey: [pagination],
+  params: computed(() => {
+    return {
       _page: pagination.value.pageIndex + 1,
       _limit: pagination.value.pageSize,
-    })
-  },
+      _sort: sorting.value.map((sort) => {
+        return `${sort.id}:${sort.desc ? 'desc' : 'asc'}`
+      }),
+    }
+  }),
 })
 
-const data = computed(() => {
-  return tasksData.value?.data ?? []
-})
-
-const columns = [
-  columnHelper.display({
+const columns: ColumnDef<Todo>[] = [
+  {
     id: 'select',
     header: ({ table }) => (
       <Checkbox
@@ -80,36 +64,33 @@ const columns = [
     ),
     enableSorting: false,
     enableHiding: false,
-  }),
-
-  columnHelper.accessor('title', {
+  },
+  {
+    id: 'title',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          class="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Title
-          {' '}
-          <ArrowUpDown class="ml-2 h-4 w-4" />
-        </Button>
+        <DataTableHeader
+          column={column}
+          label="Title"
+          onClick={() => {
+            sorting.value = [{ id: 'title', desc: column.getIsSorted() === 'asc' }]
+          }}
+        />
       )
     },
-    cell: ({ row }) => <div class="lowercase">{row.getValue('title')}</div>,
-  }),
-  columnHelper.accessor('completed', {
+    cell: ({ row }) => <div>{row.original.title}</div>,
+  },
+  {
+    id: 'completed',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          class="px-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Is Completed ?
-          {' '}
-          <ArrowUpDown class="ml-2 h-4 w-4" />
-        </Button>
+        <DataTableHeader
+          column={column}
+          label="Completed?"
+          onClick={() => {
+            sorting.value = [{ id: 'completed', desc: column.getIsSorted() === 'asc' }]
+          }}
+        />
       )
     },
     cell: ({ row }) => (
@@ -117,8 +98,8 @@ const columns = [
         {row.getValue('completed') ? 'Yes' : 'No'}
       </Badge>
     ),
-  }),
-  columnHelper.display({
+  },
+  {
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
@@ -128,79 +109,29 @@ const columns = [
           editLink={`/tasks/edit/${row.original.id}`}
           onDelete={() => {
             selectedItem.value = row.original
-            isDeleteModalOpen.value = true
+            isDialogDeleteOpen.value = true
           }}
         />
       )
     },
-  }),
+  },
 ]
 
-const table = useVueTable({
-  get data() {
-    return data.value
-  },
-  columns,
-  getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  getFilteredRowModel: getFilteredRowModel(),
-  onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
-  onColumnFiltersChange: updaterOrValue =>
-    valueUpdater(updaterOrValue, columnFilters),
-  onColumnVisibilityChange: updaterOrValue =>
-    valueUpdater(updaterOrValue, columnVisibility),
-  onRowSelectionChange: updaterOrValue =>
-    valueUpdater(updaterOrValue, rowSelection),
-  manualPagination: true,
-  rowCount: totalItems.value,
-  onPaginationChange: (updater: any) => {
-    pagination.value = updater(pagination.value)
-  },
-  state: {
-    get sorting() {
-      return sorting.value
-    },
-    get columnFilters() {
-      return columnFilters.value
-    },
-    get columnVisibility() {
-      return columnVisibility.value
-    },
-    get rowSelection() {
-      return rowSelection.value
-    },
-    columnPinning: {
-      // left: ['title'],
-    },
-    get pagination() {
-      return pagination.value
-    },
-  },
-})
+const deleteMutation = useDeleteTodo()
+const queryClient = useQueryClient()
 
-const deleteTodoMutation = useMutation({
-  mutationFn: (id: number) => {
-    return deleteTodo(id)
-  },
-  onSuccess() {
-    isDeleteModalOpen.value = false
-    toast.success('Success', {
-      description: 'Task deleted successfully',
+const { removeItem } = useDeleteMutation<Todo>({
+  selectedItem,
+  mutation: deleteMutation,
+  onSuccess: () => {
+    toast.success('Task berhasil dihapus')
+    queryClient.invalidateQueries({
+      queryKey: ['todos'],
     })
-    refetch()
-  },
-  onError(error) {
-    toast.error(getErrorMessage(error))
+    isDialogDeleteOpen.value = false
+    selectedItem.value = null
   },
 })
-
-function removeTask() {
-  if (!selectedItem.value)
-    return
-
-  deleteTodoMutation.mutate(selectedItem.value.id)
-}
 </script>
 
 <template>
@@ -215,21 +146,34 @@ function removeTask() {
       <Button as-child>
         <NuxtLink to="/tasks/create">
           Tambah
-          <Icon name="ph:plus" size="20" class="ml-2" />
+          <Icon
+            name="ph:plus"
+            size="20"
+            class="ml-2"
+          />
         </NuxtLink>
       </Button>
     </CardHeader>
     <Separator />
-    <CardContent>
-      <DataTable :table :is-loading :total-items :pagination :columns />
+    <CardContent class="pt-6">
+      <DataTable
+        v-model:pagination="pagination"
+        v-model:sorting="sorting"
+        :data
+        :columns
+        :total-items
+        :is-loading
+      />
     </CardContent>
 
     <DeleteModal
-      v-model="isDeleteModalOpen"
+      v-model="isDialogDeleteOpen"
       title="Hapus Task"
       message="Apakah Anda yakin ingin menghapus task ini?"
-      :loading="deleteTodoMutation.isPending.value"
-      @submit="removeTask"
+      :loading="deleteMutation.isPending.value"
+      @submit="removeItem"
     />
+
+    <!-- <pre wrap>{{ { data } }}</pre> -->
   </Card>
 </template>

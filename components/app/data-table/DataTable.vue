@@ -1,34 +1,86 @@
 <script setup lang="ts" generic="T">
 import {
+  type ColumnDef,
+  type ColumnFiltersState,
   FlexRender,
   type PaginationState,
-  type Table,
+  type RowSelectionState,
+  type SortingState,
+  type VisibilityState,
 } from '@tanstack/vue-table'
+import { useTable } from '~/composables/table'
 import { cn } from '~/lib/utils'
 
-const { pagination, totalItems, table } = defineProps<{
-  table: Table<T>
-  isLoading?: boolean
-  pagination: PaginationState
+export interface DataTableProps<T> {
+  data: T[]
   totalItems: number
-  columns: any[]
-}>()
+  columns: ColumnDef<T>[]
+  isLoading?: boolean
+  itemsPerPageOptions?: number[]
+  hideHeader?: boolean
+  emptyText?: string
+  manualPagination?: boolean
+  manualSorting?: boolean
+}
+
+const {
+  data = [],
+  columns = [],
+  totalItems = 0,
+  itemsPerPageOptions = [10, 20, 30, 40, 50],
+  emptyText = 'Tidak ada data',
+  manualPagination = true,
+  manualSorting = true,
+} = defineProps<DataTableProps<T>>()
 
 const currentPage = defineModel<number>('page', {
   default: 1,
 })
 
-watch(currentPage, () => {
-  table.setPageIndex(currentPage.value - 1)
+const columnFilters = defineModel<ColumnFiltersState>('columnFilters', {
+  default: [],
+})
+const columnVisibility = defineModel<VisibilityState>('columnVisibility', {
+  default: {},
+})
+const rowSelection = defineModel<RowSelectionState>('rowSelection', {
+  default: {},
+})
+const sorting = defineModel<SortingState>('sorting', {
+  default: [],
+})
+const pagination = defineModel<PaginationState>('pagination', {
+  default: {
+    pageIndex: 0,
+    pageSize: 10,
+  },
+})
+
+const table = useTable({
+  data: computed(() => data),
+  columns,
+  sorting,
+  columnFilters,
+  columnVisibility,
+  rowSelection,
+  pagination,
+  totalItems: computed(() => totalItems),
+  manualPagination,
+  manualSorting,
+})
+
+watch(currentPage, (val) => {
+  table.setPageIndex(val - 1)
 })
 </script>
 
 <template>
-  <div class="w-full">
-    <DataTableHeader :table="table" />
-    <div class="-mx-6 border-y relative">
+  <div class="w-full border rounded-lg shadow">
+    <div class="relative">
       <Table>
-        <TableHeader>
+        <TableHeader
+          v-if="!hideHeader"
+        >
           <TableRow
             v-for="headerGroup in table.getHeaderGroups()"
             :key="headerGroup.id"
@@ -39,6 +91,7 @@ watch(currentPage, () => {
               :data-pinned="header.column.getIsPinned()"
               :class="
                 cn(
+                  'text-sm bg-gray-100 font-bold text-gray-800',
                   {
                     'sticky bg-background/95': header.column.getIsPinned(),
                   },
@@ -72,11 +125,16 @@ watch(currentPage, () => {
             </template>
           </template>
 
-          <template v-else-if="table.getRowModel().rows?.length">
+          <template
+            v-else-if="table.getRowModel().rows?.length"
+          >
             <TableRow
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               :data-state="row.getIsSelected() && 'selected'"
+              :class="cn(
+                'even:bg-gray-50',
+              )"
             >
               <TableCell
                 v-for="cell in row.getVisibleCells()"
@@ -101,20 +159,24 @@ watch(currentPage, () => {
 
           <TableRow v-else>
             <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
+              <slot name="empty-text">
+                {{ emptyText }}
+              </slot>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
     </div>
 
-    <DataTablePagination
+    <DataTableFooter
       v-model:page="currentPage"
-      class="mt-6"
-      :table
-      :is-loading
-      :total-items
-      :items-per-page="pagination.pageSize"
+      :total-items="totalItems"
+      :is-loading="isLoading"
+      :items-per-page="String(pagination.pageSize)"
+      :items-per-page-options="itemsPerPageOptions"
+      @update:items-per-page="itemsPerPage => {
+        table.setPageSize(Number(itemsPerPage))
+      }"
     />
   </div>
 </template>

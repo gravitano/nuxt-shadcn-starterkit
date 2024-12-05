@@ -2,8 +2,6 @@
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 import { useForm } from 'vee-validate'
-import { useMutation, useQuery } from '@tanstack/vue-query'
-import { toast } from 'vue-sonner'
 import {
   FormControl,
   FormField,
@@ -11,32 +9,19 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { type CreateTodoPayload, type UpdateTodoPayload, createTodo, getTodoById, updateTodo } from '~/api/tasks'
-import { getErrorMessage } from '~/lib/utils'
 
 const route = useRoute()
 const action = route.params.action as 'create' | 'edit' | 'view'
 const isView = action === 'view'
 const id = route.params.id as string
 
-const actionLabel = {
-  create: 'Create',
-  edit: 'Edit',
-  view: 'View',
-}[action]
-
 const submitLabel = {
   create: 'Tambah Task',
   edit: 'Perbarui Task',
   view: 'Lihat Task',
-}[action]
+} as const
 
-const { data, isLoading } = useQuery({
-  queryKey: ['task', id],
-  queryFn: () => {
-    return getTodoById(id)
-  },
-})
+const { data, isLoading } = useTodo(id)
 
 const formSchema = toTypedSchema(
   yup.object({
@@ -60,54 +45,29 @@ watch(data, (value) => {
   }
 })
 
-const createMutation = useMutation({
-  mutationFn: (payload: CreateTodoPayload) => {
-    return createTodo(payload)
-  },
-  onSuccess() {
-    toast.success('Success!', {
-      description: 'Task created successfully',
-    })
-    navigateTo('/tasks')
-  },
-  onError(error) {
-    toast.error(getErrorMessage(error))
-  },
-})
-
-const updateMutation = useMutation({
-  mutationFn: (payload: UpdateTodoPayload) => {
-    return updateTodo(id, payload)
-  },
-  onSuccess() {
-    toast.success('Success', {
-      description: 'Task updated successfully',
-    })
-    navigateTo('/tasks')
-  },
-  onError(error) {
-    toast.error(getErrorMessage(error))
-  },
-})
+const mutation = useCreateOrUpdateTodo()
 
 const onSubmit = handleSubmit((values) => {
-  if (action === 'create') {
-    createMutation.mutate(values)
-  }
-  else if (action === 'edit') {
-    updateMutation.mutate(values)
-  }
-  else {
-    throw new Error('Invalid action')
-  }
+  mutation.mutate({
+    id,
+    body: values,
+  })
 })
 </script>
 
 <template>
   <div>
-    <Button as-child variant="ghost" class="-mx-4 mb-4 font-semibold">
+    <Button
+      as-child
+      variant="ghost"
+      class="-mx-4 mb-4 font-semibold"
+    >
       <NuxtLink to="/tasks">
-        <Icon name="ph:arrow-left" size="20" class="mr-2" />
+        <Icon
+          name="ph:arrow-left"
+          size="20"
+          class="mr-2"
+        />
         Kembali
       </NuxtLink>
     </Button>
@@ -165,14 +125,16 @@ const onSubmit = handleSubmit((values) => {
       >
         <CardFooter class="py-6 justify-end gap-4">
           <Button
-            :disabled="isLoading || createMutation.isPending.value || updateMutation.isPending.value" variant="outline" @click="navigateTo('/tasks')"
+            :disabled="isLoading || mutation.isPending.value"
+            variant="outline"
+            @click="navigateTo('/tasks')"
           >
             Batal
           </Button>
           <Button
             type="submit"
             :disabled="isLoading"
-            :loading="createMutation.isPending.value || updateMutation.isPending.value"
+            :loading="mutation.isPending.value"
           >
             {{ submitLabel }}
           </Button>
