@@ -46,7 +46,11 @@ const selectedValues = computed(
 <template>
   <Popover>
     <PopoverTrigger as-child>
-      <Button variant="outline" size="sm" class="h-8 border-dashed">
+      <Button
+        variant="outline"
+        size="sm"
+        class="h-8 border-dashed"
+      >
         <PlusCircledIcon class="mr-2 h-4 w-4" />
         {{ title }}
         <template v-if="selectedValues.size > 0">
@@ -96,7 +100,6 @@ const selectedValues = computed(
               :value="option"
               @select="
                 (e) => {
-                  console.log(e.detail.value);
                   const isSelected = selectedValues.has(option.value);
                   if (isSelected) {
                     selectedValues.delete(option.value);
