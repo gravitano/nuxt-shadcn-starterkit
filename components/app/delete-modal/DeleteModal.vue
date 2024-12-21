@@ -47,7 +47,11 @@ const modelValue = defineModel<boolean>({
         <div
           class="bg-red-50 rounded-full size-12 flex items-center justify-center mb-4"
         >
-          <Icon name="lucide:trash-2" size="24" class="text-red-500" />
+          <Icon
+            name="lucide:trash-2"
+            size="24"
+            class="text-red-500"
+          />
         </div>
         <DialogTitle>
           {{ title }}
@@ -59,7 +63,8 @@ const modelValue = defineModel<boolean>({
       <div class="flex gap-4 items-center justify-center">
         <DialogClose as-child>
           <Button
-            variant="outline" class="flex-grow"
+            variant="outline"
+            class="flex-grow"
             :disabled="loading"
           >
             {{ cancelText }}

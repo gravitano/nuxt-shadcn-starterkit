@@ -58,7 +58,12 @@ const currentPage = defineModel<number>('page', {
 
       <div class="flex items-center">
         <template v-for="(item, index) in items">
-          <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+          <PaginationListItem
+            v-if="item.type === 'page'"
+            :key="index"
+            :value="item.value"
+            as-child
+          >
             <Button
               class="w-10 h-10 p-0 rounded-none border-[#D0D5DD] border-l-0"
               :variant="item.value === page ? 'default' : 'outline'"

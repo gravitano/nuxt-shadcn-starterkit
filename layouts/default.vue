@@ -24,7 +24,11 @@ const isCollapsed = ref(false)
       <div class="px-5">
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center h-full p-3">
-            <Icon name="ph:magnifying-glass" size="20" class="text-gray-500" />
+            <Icon
+              name="ph:magnifying-glass"
+              size="20"
+              class="text-gray-500"
+            />
           </div>
           <Input placeholder="Search" class="pl-10" />
         </div>
@@ -46,7 +50,8 @@ const isCollapsed = ref(false)
     </Sidebar>
 
     <div
-      class="flex-grow transition-all duration-300" :class="[
+      class="flex-grow transition-all duration-300"
+      :class="[
         {
           'lg:ml-[320px]': layout.isSidebarOpen,
         },

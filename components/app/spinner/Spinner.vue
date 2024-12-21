@@ -14,7 +14,8 @@ const props = withDefaults(defineProps<SpinnerProps>(), {
 
 <template>
   <div
-    class="flex justify-center items-center z-[5]" :class="[
+    class="flex justify-center items-center z-[5]"
+    :class="[
       {
         'absolute inset-0': position === 'absolute',
         'relative': position === 'relative',

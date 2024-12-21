@@ -16,5 +16,5 @@ export default antfu({
       singleline: 'ignore',
       multiline: 'below',
     }],
-  },
+  }
 })

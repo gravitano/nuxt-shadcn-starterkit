@@ -15,7 +15,11 @@ const components = [
 
     <ul>
       <li v-for="component in components" :key="component.title">
-        <Button variant="link" as-child class="text-sm font-semibold">
+        <Button
+          variant="link"
+          as-child
+          class="text-sm font-semibold"
+        >
           <NuxtLink :to="component.to">
             {{ component.title }}
           </NuxtLink>

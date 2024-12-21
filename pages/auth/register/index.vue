@@ -39,7 +39,12 @@ const onSubmit = handleSubmit((_values) => {
 
 <template>
   <div class="w-[500px]">
-    <NuxtImg src="/logo.png" alt="Logo" class="mb-6 w-[150px]" fit="center" />
+    <NuxtImg
+      src="/logo.png"
+      alt="Logo"
+      class="mb-6 w-[150px]"
+      fit="center"
+    />
 
     <div class="space-y-2 mb-6">
       <h1 class="text-2xl font-semibold text-app-primary dark:text-foreground">
@@ -47,7 +52,11 @@ const onSubmit = handleSubmit((_values) => {
       </h1>
       <p class="text-sm text-muted-foreground">
         Sudah punya akun?
-        <Button as-child variant="link" class="px-0">
+        <Button
+          as-child
+          variant="link"
+          class="px-0"
+        >
           <NuxtLink to="/auth/login" class="text-app-primary">
             Masuk
           </NuxtLink>
@@ -130,7 +139,11 @@ const onSubmit = handleSubmit((_values) => {
         </FormField>
       </div>
 
-      <Button type="submit" class="w-full" :disabled="!meta.valid">
+      <Button
+        type="submit"
+        class="w-full"
+        :disabled="!meta.valid"
+      >
         Register
       </Button>
     </form>

@@ -37,7 +37,11 @@ const currentIcon = computed(() => colorIcon[state.value] ?? 'ph:laptop')
       <!-- <div class="font-semibold text-lg hidden lg:block">Admin</div> -->
     </div>
     <nav class="flex items-center gap-2">
-      <Button variant="ghost" class="size-8 p-0" aria-label="Notification">
+      <Button
+        variant="ghost"
+        class="size-8 p-0"
+        aria-label="Notification"
+      >
         <NotificationIcon class="size-5 text-gray-800" />
       </Button>
       <Button

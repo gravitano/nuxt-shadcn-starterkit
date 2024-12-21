@@ -32,7 +32,11 @@ const columns = computed(() =>
 <template>
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
-      <Button variant="outline" size="sm" class="ml-auto hidden h-8 lg:flex">
+      <Button
+        variant="outline"
+        size="sm"
+        class="ml-auto hidden h-8 lg:flex"
+      >
         <MixerHorizontalIcon class="mr-2 h-4 w-4" />
         View
       </Button>

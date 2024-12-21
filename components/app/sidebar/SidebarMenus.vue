@@ -17,7 +17,11 @@ const route = useRoute()
 
 <template>
   <template v-for="menu in menus" :key="menu.label">
-    <Accordion v-if="menu.children" type="single" collapsible>
+    <Accordion
+      v-if="menu.children"
+      type="single"
+      collapsible
+    >
       <AccordionItem value="item-1">
         <AccordionTrigger>
           <HorizontalMenu
