@@ -15,10 +15,12 @@ useHead({
 </script>
 
 <template>
-  <NuxtRouteAnnouncer />
-  <NuxtLoadingIndicator />
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
-  <Toaster class="pointer-events-auto" />
+  <TooltipProvider :delay-duration="300">
+    <NuxtRouteAnnouncer />
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+    <Toaster class="pointer-events-auto" />
+  </TooltipProvider>
 </template>
