@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/image',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@vee-validate/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/test-utils/module',
