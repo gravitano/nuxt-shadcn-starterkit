@@ -27,7 +27,7 @@ const userInitial = computed(() => {
       <AvatarFallback>{{ userInitial }}</AvatarFallback>
     </Avatar>
     <div class="flex-grow w-7/12">
-      <h3 class="text-sm font-semibold">
+      <h3 class="text-sm font-semibold text-gray-800">
         {{ auth.user.name }}
       </h3>
       <div :title="auth.user.email" class="text-sm text-gray-500 truncate">

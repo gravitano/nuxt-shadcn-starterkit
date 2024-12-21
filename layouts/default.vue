@@ -21,25 +21,20 @@ const isCollapsed = ref(false)
         />
       </NuxtLink>
 
-      <div class="px-5">
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 flex items-center h-full p-3">
-            <Icon
-              name="ph:magnifying-glass"
-              size="20"
-              class="text-gray-500"
-            />
-          </div>
-          <Input placeholder="Search" class="pl-10" />
-        </div>
+      <SidebarSearch />
+
+      <div class="flex-grow flex-1 overflow-y-auto px-5 mt-4">
+        <Nav
+          :is-collapsed="isCollapsed"
+          :links="mainMenus"
+        />
       </div>
 
-      <div class="flex-grow flex-1 overflow-y-auto px-5">
-        <Nav :is-collapsed="isCollapsed" :links="mainMenus" />
-      </div>
-
-      <div class="px-5">
-        <Nav :is-collapsed="isCollapsed" :links="secondaryMenus" />
+      <div class="px-5 space-y-4">
+        <Nav
+          :is-collapsed="isCollapsed"
+          :links="secondaryMenus"
+        />
 
         <SidebarUsedSpace :progress="75" />
       </div>

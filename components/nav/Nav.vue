@@ -1,92 +1,95 @@
 <script lang="ts" setup>
-import { cn } from '@/lib/utils'
-import { buttonVariants } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-
-export interface LinkProp {
-  title: string
-  label?: string
-  icon: string
-  variant: 'default' | 'ghost'
-  to?: string
-}
+import { ChevronDownIcon } from '@morphemeicons/vue/untitled'
+import type { NavItemProps } from './NavItem.vue'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 interface NavProps {
-  isCollapsed: boolean
-  links: LinkProp[]
+  links: NavItemProps[]
+  collapsible?: boolean
 }
 
-defineProps<NavProps>()
+const {
+  links,
+} = defineProps<NavProps>()
+
+const accordionValue = ref<string | string[]>([])
+const route = useRoute()
+
+function isPathActive(path: string) {
+  return route.path === path || route.path.includes(path)
+}
+
+const currentActiveLink = computed(() => {
+  return links.find((link) => {
+    if (link.children) {
+      return link.children.some(child => isPathActive(child.to!))
+    }
+
+    return isPathActive(link.to!)
+  })
+})
+
+watchEffect(() => {
+  if (currentActiveLink.value) {
+    accordionValue.value = currentActiveLink.value.title
+  }
+})
+
+// const auth = useAuthStore()
+
+function canAccessMenu(link: NavItemProps) {
+  // if (link.allowedRoles) {
+  //   return link.allowedRoles.includes(normalizeRoleName(auth.currentRole))
+  // }
+
+  return true
+}
 </script>
 
 <template>
-  <div
-    :data-collapsed="isCollapsed"
-    class="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+  <Accordion
+    v-model="accordionValue"
+    type="single"
+    collapsible
+    class="space-y-1"
   >
-    <nav
-      class="grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
-    >
-      <template v-for="(link, index) of links" :key="index">
-        <TooltipProvider v-if="isCollapsed">
-          <Tooltip :key="`1-${index}`" :delay-duration="0">
-            <TooltipTrigger as-child>
-              <NuxtLink
-                :to="link.to"
-                :class="
-                  cn(
-                    buttonVariants({ variant: link.variant, size: 'icon' }),
-                    'h-9 w-9',
-                    link.variant === 'default'
-                      && 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-                  )
-                "
-              >
-                <Icon :name="link.icon" class="size-4" />
-                <span class="sr-only">{{ link.title }}</span>
-              </NuxtLink>
-            </TooltipTrigger>
-            <TooltipContent side="right" class="flex items-center gap-4">
-              {{ link.title }}
-              <span v-if="link.label" class="ml-auto text-muted-foreground">
-                {{ link.label }}
-              </span>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <NuxtLink
-          v-else
-          :key="`2-${index}`"
-          :to="link.to"
-          :class="
-            cn(
-              buttonVariants({ variant: link.variant, size: 'sm' }),
-              link.variant === 'default'
-                && 'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
-              'justify-start',
-            )
-          "
+    <template v-for="(link, linkIndex) in links" :key="linkIndex">
+      <template v-if="link.children">
+        <AccordionItem
+          v-if="canAccessMenu(link)"
+          :value="link.title"
         >
-          <Icon :name="link.icon" class="mr-2 size-4" />
-          {{ link.title }}
-          <span
-            v-if="link.label"
-            :class="
-              cn(
-                'ml-auto',
-                link.variant === 'default' && 'text-background dark:text-white',
-              )
-            "
-          >
-            {{ link.label }}
-          </span>
-        </NuxtLink>
+          <AccordionTrigger class="py-0">
+            <NavItem
+              :to="link.to"
+              :title="link.title"
+              :icon="link.icon"
+              :exact="link.exact"
+              :children="link.children"
+              :label="link.label"
+            />
+            <template #icon>
+              <ChevronDownIcon
+                class="text-white h-4 w-4 shrink-0 transition-transform duration-200"
+              />
+            </template>
+          </AccordionTrigger>
+          <AccordionContent class="pt-2">
+            <Nav :links="link.children" />
+          </AccordionContent>
+        </AccordionItem>
       </template>
-    </nav>
-  </div>
+      <template v-else>
+        <NavItem
+          v-if="canAccessMenu(link)"
+          :to="link.to"
+          :title="link.title"
+          :icon="link.icon"
+          :exact="link.exact"
+          :children="link.children"
+          :label="link.label"
+        />
+      </template>
+    </template>
+  </Accordion>
 </template>

@@ -16,8 +16,8 @@
     --primary: 220 97% 49%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 215 32% 17%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 220 13% 46%;
@@ -35,6 +35,19 @@
 
     --sidebar: 0 0% 100%;
     --sidebar-foreground: 222.2 84% 4.9%;
+
+    /* ... */
+    --vis-tooltip-background-color: none !important;
+    --vis-tooltip-border-color: none !important;
+    --vis-tooltip-text-color: none !important;
+    --vis-tooltip-shadow-color: none !important;
+    --vis-tooltip-backdrop-filter: none !important;
+    --vis-tooltip-padding: none !important;
+
+    --vis-primary-color: var(--primary);
+    /* change to any hsl value you want */
+    --vis-secondary-color: 160 81% 40%;
+    --vis-text-color: var(--muted-foreground);
   }
 
   .dark {
@@ -75,9 +88,28 @@
   * {
     @apply border-border;
   }
-  body {
-    font-family: Poppins, sans-serif;
 
+  body {
     @apply bg-background text-foreground;
+  }
+
+  html {
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+
+  .textfield {
+    -moz-appearance: textfield;
+  }
+
+  /* Hide the arrows in input[type="number"] for Webkit browsers */
+  input[type='number'].textfield::-webkit-outer-spin-button,
+  input[type='number'].textfield::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Hide the arrows in input[type="number"] for Firefox */
+  input[type='number'].textfield {
+    -moz-appearance: textfield;
   }
 }
