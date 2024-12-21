@@ -9,13 +9,10 @@ import { toast } from 'vue-sonner'
 import { useQueryClient } from '@tanstack/vue-query'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Icon, NuxtLink } from '#components'
+import { DataTableHeader, DeleteModal, Icon, NuxtLink, TableAction } from '#components'
 import { Badge } from '~/components/ui/badge'
-import DeleteModal from '~/components/app/delete-modal/DeleteModal.vue'
-import TableAction from '~/components/app/TableAction'
 import { useTodos } from '~/queries/todos'
 import type { Todo } from '~/types/todos'
-import DataTableHeader from '~/components/app/data-table/DataTableHeader.vue'
 
 const sorting = ref<SortingState>([])
 const isDialogDeleteOpen = ref(false)

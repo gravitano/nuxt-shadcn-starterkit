@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { mockComponent, mountSuspended } from '@nuxt/test-utils/runtime'
-import TableAction from '~/components/app/TableAction'
+import TableAction from '~/components/app/TableAction.vue'
 
-mockComponent('TableAction', () => import('~/components/app/TableAction'))
+mockComponent('TableAction', () => import('~/components/app/TableAction.vue'))
 
 describe('tableAction', () => {
   it('can mount some component', async () => {

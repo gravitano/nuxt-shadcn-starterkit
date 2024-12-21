@@ -41,12 +41,12 @@ const isCollapsed = ref(false)
       <div class="px-5">
         <Nav :is-collapsed="isCollapsed" :links="secondaryMenus" />
 
-        <UsedSpace :progress="75" />
+        <SidebarUsedSpace :progress="75" />
       </div>
 
       <Separator class="mt-5" />
 
-      <UserProfileCard class="p-4" />
+      <SidebarUserProfileCard class="p-4" />
     </Sidebar>
 
     <div

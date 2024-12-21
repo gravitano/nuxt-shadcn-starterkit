@@ -62,20 +62,7 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
 
-  // nuxt components
-  components: [
-    // ~/user-module/components/account/UserDeleteDialog.vue => <UserDeleteDialog />
-    { path: '~/components/app', pathPrefix: false },
-
-    // It's important that this comes last if you have overrides you wish to apply
-    // to sub-directories of `~/components`.
-    //
-    // ~/components/Btn.vue => <Btn />
-    // ~/components/base/Btn.vue => <BaseBtn />
-    '~/components',
-  ],
-
   imports: {
-    dirs: ['./queries', './constants'],
+    dirs: ['./queries'],
   },
 })

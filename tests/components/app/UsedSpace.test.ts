@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { mockComponent, mountSuspended } from '@nuxt/test-utils/runtime'
-import UsedSpace from '~/components/app/UsedSpace.vue'
+import UsedSpace from '~/components/sidebar/UsedSpace.vue'
 
-mockComponent('UsedSpace', () => import('~/components/app/UsedSpace.vue'))
+mockComponent('UsedSpace', () => import('~/components/sidebar/UsedSpace.vue'))
 
 describe('usedSpace.vue', () => {
   it('can mount some component', async () => {

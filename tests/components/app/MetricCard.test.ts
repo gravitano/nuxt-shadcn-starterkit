@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { mockComponent, mountSuspended } from '@nuxt/test-utils/runtime'
-import MetricCard from '~/components/app/MetricCard.vue'
+import MetricCard from '~/components/metric/MetricCard.vue'
 
-mockComponent('MetricCard', () => import('~/components/app/MetricCard.vue'))
+mockComponent('MetricCard', () => import('~/components/metric/MetricCard.vue'))
 
 describe('metricCard.vue', () => {
   it('can mount some component', async () => {

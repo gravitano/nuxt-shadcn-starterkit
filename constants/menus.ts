@@ -1,4 +1,4 @@
-import type { LinkProp } from '@/components/app/Nav.vue'
+import type { LinkProp } from '~/components/nav/Nav.vue'
 
 function activeVariant(path: string, isInclude = true) {
   const route = useRoute()

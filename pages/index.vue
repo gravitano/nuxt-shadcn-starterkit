@@ -58,8 +58,8 @@ const statisticItems = ref<StatisticCardProps[]>([
     </div>
 
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-      <OverviewCard />
-      <RecentSalesCard />
+      <DashboardOverviewCard />
+      <DashboardRecentSalesCard />
     </div>
   </div>
 </template>
