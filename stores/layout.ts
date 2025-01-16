@@ -1,5 +1,5 @@
 export const useLayoutStore = defineStore('layout', () => {
-  const isSidebarOpen = ref(false)
+  const isSidebarOpen = ref(true)
 
   const toggleSidebar = () => {
     isSidebarOpen.value = !isSidebarOpen.value
